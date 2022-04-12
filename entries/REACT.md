@@ -1,1 +1,1 @@
-react is a free and open source frontend javascript library for building UI.
+react is a free and open source frontend javascript library for building User interface.
