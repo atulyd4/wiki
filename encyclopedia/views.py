@@ -28,20 +28,33 @@ def entry_details(request, entry):
 def search(request):
 
     if request.method == "GET":
-        query = request.GET.get("q")
+        query = request.GET.get("q", "")
         entry_data = util.get_entry(query)
         if entry_data is not None:
             html_data = markdown2.markdown(entry_data)
-            return render(request, "encyclopedia/entry.html", {"entry": html_data})
+            return render(
+                request,
+                "encyclopedia/entry.html",
+                {"detail": html_data, "entry": query},
+            )
+
         else:
             result = []
             for entry in util.list_entries():
+
                 if query.upper() in entry.upper():
                     result.append(entry)
+
                     return render(
                         request,
                         "encyclopedia/index.html",
                         {"entries": result, "search": True, "query": query},
+                    )
+                else:
+                    return render(
+                        request,
+                        "encyclopedia/error.html",
+                        {"search": True, "query": query},
                     )
 
 
